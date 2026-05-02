@@ -1,0 +1,150 @@
+.app {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.connection-status {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.connection-status.connected {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.connection-status.disconnected,
+.connection-status.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.attack-status {
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.attack-status.detected {
+  background-color: #ffcccc;
+  color: #cc0000;
+}
+
+.attack-status.no-attack {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.attack-status.waiting {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tabs button.active {
+  background-color: #3357ff;
+  color: white;
+}
+
+.tabs button:hover:not(.active) {
+  background-color: #e0e0e0;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.chart-container {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.exceeded-threshold {
+  background-color: #ffcccc;
+}
+
+.threshold-alert {
+  background-color: #ffcccc;
+  color: #cc0000;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2c3e50; /* Dark blue background */
+  padding: 15px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.nav-link {
+  color: #ecf0f1; /* Light gray text */
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #34495e; /* Slightly lighter shade on hover */
+  color: #ffffff; /* White text on hover */
+}
+
+.nav-link.active {
+  background-color: #3498db; /* Highlight active route with blue */
+  color: #ffffff; /* White text for active link */
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .nav-link {
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+  }
+}

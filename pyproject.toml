@@ -1,0 +1,31 @@
+[project]
+name = "netmoniai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.86.0",
+    "fastapi>=0.135.1",
+    "fonttools>=4.62.1",
+    "google-api-python-client>=2.193.0",
+    "google-genai>=1.68.0",
+    "huggingface-hub>=1.7.1",
+    "keras>=3.13.2",
+    "netifaces>=0.11.0",
+    "openai>=2.29.0",
+    "pandas>=3.0.1",
+    "psutil>=7.2.2",
+    "pydantic>=2.12.5",
+    "groq>=0.12.0",
+    "pydantic-ai>=1.70.0",
+    "python-dotenv>=1.2.2",
+    "scapy>=2.7.0",
+    "scikit-learn>=1.8.0",
+    "scipy>=1.17.1",
+    "tensorboard>=2.20.0",
+    "tensorflow>=2.21.0",
+    "torch>=2.10.0",
+    "transformers>=5.3.0",
+    "uvicorn>=0.42.0",
+]

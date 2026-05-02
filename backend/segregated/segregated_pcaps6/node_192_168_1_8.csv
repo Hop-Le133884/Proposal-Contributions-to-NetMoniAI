@@ -1,0 +1,1 @@
+frame.time,ip.src,ip.dst,ip.proto,tcp.srcport,tcp.dstport,udp.srcport,udp.dstport,tcp.flags,tcp.flags.syn,tcp.flags.reset,frame.len,data.len,ip.ttl,tcp.window_size,tcp.ack,http.request.method,http.response.code

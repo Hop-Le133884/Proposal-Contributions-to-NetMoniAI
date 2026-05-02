@@ -1,0 +1,84 @@
+/* chatbot.css */
+.chatbot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000; /* Keeps it on top of everything else */
+  }
+  
+  .chatbot-toggle {
+    padding: 10px 15px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* Makes it look clickable */
+  }
+  
+  .chatbot-toggle:hover {
+    background-color: #0056b3; /* Darker blue when you hover */
+  }
+  
+  .chatbot-window {
+    width: 300px;
+    height: 400px;
+    background-color: #fff; /* White background */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Slight shadow */
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  
+  .chat-history {
+    flex: 1; /* Takes up most of the space */
+    overflow-y: auto; /* Lets you scroll if there are lots of messages */
+    padding: 10px;
+  }
+  
+  .message {
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 3px;
+  }
+  
+  .message.user {
+    background-color: #007bff; /* Blue for your messages */
+    color: white;
+    align-self: flex-end;
+    margin-left: 50px; /* Pushes it to the right */
+  }
+  
+  .message.bot {
+    background-color: #f1f1f1; /* Gray for bot messages */
+    color: black;
+    margin-right: 50px; /* Pushes it to the left */
+  }
+  
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chat-input input {
+    flex: 1; /* Stretches to fill space */
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+  
+  .chat-input button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .chat-input button:hover {
+    background-color: #0056b3;
+  }

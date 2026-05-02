@@ -1,0 +1,181 @@
+/* 
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+svg {
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.node circle {
+  fill: steelblue;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 10px;
+  fill: #333;
+  pointer-events: none;
+}
+
+.packet {
+  fill: orangered;
+}
+
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 12px;
+} */
+
+/* NetworkVisualizer.css */
+/* .container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  width: 100%; 
+  max-width: 800px; 
+}
+
+svg {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  width: 100%; 
+  height: auto; 
+}
+
+.node circle {
+  fill: steelblue;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 10px;
+  fill: #333;
+  pointer-events: none;
+}
+
+.packet {
+  fill: orangered;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 12px;
+} */
+
+/* new version */
+
+/* NetworkVisualizer.css */
+/* .container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  width: 100%;
+  max-width: none;
+}
+
+svg {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  width: 100%;
+  height: auto;
+}
+
+.node circle {
+  fill: steelblue;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 10px;
+  fill: #333;
+  pointer-events: none;
+}
+
+.packet {
+  fill: orangered;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 12px;
+} */
+
+/* NetworkVisualizer.css */
+
+/* ───── Wrapper for your SVG/Canvas ───── */
+.network-visualization {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 100%;              /* fill the left-panel */
+  box-sizing: border-box;
+}
+
+/* ───── Make the SVG/Canvas inside fill that wrapper ───── */
+.network-visualization > svg,
+.network-visualization canvas {
+  width: 100% !important;
+  height: 450px;            /* fixed height you choose */
+}
+
+/* ───── Node styling ───── */
+.node circle {
+  fill: steelblue;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+.node text {
+  font-size: 10px;
+  fill: #333;
+  pointer-events: none;
+}
+
+/* ───── Packet dot styling ───── */
+.packet {
+  fill: orangered;
+}
+
+/* ───── Tooltip styling ───── */
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 12px;
+}
