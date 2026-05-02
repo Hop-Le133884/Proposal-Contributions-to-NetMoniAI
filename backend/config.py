@@ -21,4 +21,4 @@ DEFAULT_DEPS = MyDeps(
 
 SLIDING_WINDOW_MAXLEN = 15
 
-INTERFACE = "en0" 
+INTERFACE = "en0"  # overridden by NET_IFACE env var via data_collection.py

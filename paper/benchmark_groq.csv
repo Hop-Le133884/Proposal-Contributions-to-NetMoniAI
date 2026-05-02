@@ -1,9 +1,9 @@
 run_timestamp,model,pcap_file,node_ip,bert_label,bert_score,confidence_tier,strategy,time_to_report_ms,tokens
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-0-0.pcap,192.168.1.1,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,798,800
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-1-0.pcap,192.168.1.2,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,884,830
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-2-0.pcap,192.168.1.3,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,905,831
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-3-0.pcap,192.168.1.4,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,595,797
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-4-0.pcap,192.168.1.5,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,598,806
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-5-0.pcap,192.168.1.6,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,600,815
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-6-0.pcap,192.168.1.7,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,596,811
-2026-05-01 22:49:19,LLaMA-3.3-70B (Groq LPU),ddos-7-0.pcap,192.168.1.8,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,697,830
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-0-0.pcap,192.168.1.1,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,954,791
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-1-0.pcap,192.168.1.2,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,598,799
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-2-0.pcap,192.168.1.3,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,601,796
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-3-0.pcap,192.168.1.4,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,698,830
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-4-0.pcap,192.168.1.5,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,622,791
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-5-0.pcap,192.168.1.6,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,811,830
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-6-0.pcap,192.168.1.7,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,560,806
+2026-05-01 23:51:09,LLaMA-3.3-70B (Groq LPU),ddos-7-0.pcap,192.168.1.8,Web Attack - Brute Force,94.44,HIGH,high_confidence_brief,712,830

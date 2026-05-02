@@ -1,7 +1,8 @@
+import os
 import subprocess
 
 # INTERFACE = "Wi-Fi"  # Network interface for capture
-INTERFACE = "en0"
+INTERFACE = os.environ.get("NET_IFACE", "wlp3s0")
 OUTPUT_FILE = "lastCapture/capture.pcap"
 
 def collect_data_func(duration):

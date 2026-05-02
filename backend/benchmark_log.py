@@ -1,13 +1,16 @@
 """
 Run analyze_nodes.py and save timing/token results to CSV in paper/
-Usage: python benchmark_log.py
+Usage:
+  python benchmark_log.py --llm=groq    (LLaMA 3.3 70B via Groq LPU)
+  python benchmark_log.py --llm=openai  (GPT-4o via OpenAI)
 
 Appends one row per PCAP file to:
-  ../paper/benchmark_gpt4o.csv   (when GPT-4o is active)
-  ../paper/benchmark_groq.csv    (when Groq LLaMA is active)
+  ../paper/benchmark_gpt4o.csv   (when --llm=openai)
+  ../paper/benchmark_groq.csv    (when --llm=groq)
   ../paper/benchmark_all.csv     (always — combined across both models)
 """
 
+import argparse
 import subprocess
 import re
 import csv
@@ -17,7 +20,6 @@ import datetime
 
 
 PAPER_DIR = os.path.join(os.path.dirname(__file__), "../paper")
-REPORTING_AGENT_PATH = os.path.join(os.path.dirname(__file__), "nw_agents/ReportingAgent.py")
 
 FIELDNAMES = [
     "run_timestamp", "model", "pcap_file", "node_ip",
@@ -25,19 +27,27 @@ FIELDNAMES = [
     "strategy", "time_to_report_ms", "tokens"
 ]
 
-
-def detect_active_model() -> str:
-    with open(REPORTING_AGENT_PATH) as f:
-        content = f.read()
-    if "GroqModel" in content:
-        return "LLaMA-3.3-70B (Groq LPU)"
-    elif "OpenAIModel" in content:
-        return "GPT-4o (OpenAI)"
-    return "Unknown"
+MODEL_DISPLAY = {
+    "groq": "LLaMA-3.3-70B (Groq LPU)",
+    "openai": "GPT-4o (OpenAI)",
+}
 
 
-def run_analyze_nodes() -> str:
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Benchmark analyze_nodes.py with a chosen LLM.")
+    parser.add_argument(
+        "--llm",
+        choices=["groq", "openai"],
+        default="groq",
+        help="Which LLM backend to use for the ReportingAgent (default: groq)",
+    )
+    return parser.parse_args()
+
+
+def run_analyze_nodes(llm: str) -> str:
     print("Running analyze_nodes.py ...\n")
+    env = os.environ.copy()
+    env["LLM_PROVIDER"] = llm
     lines = []
     with subprocess.Popen(
         [sys.executable, "analyze_nodes.py"],
@@ -45,6 +55,7 @@ def run_analyze_nodes() -> str:
         stderr=subprocess.STDOUT,
         text=True,
         bufsize=1,
+        env=env,
     ) as proc:
         for line in proc.stdout:
             print(line, end="", flush=True)
@@ -152,10 +163,11 @@ def print_summary(records: list[dict], model_name: str):
 
 
 def main():
-    model_name = detect_active_model()
+    args = parse_args()
+    model_name = MODEL_DISPLAY[args.llm]
     print(f"Active model: {model_name}\n")
 
-    output = run_analyze_nodes()
+    output = run_analyze_nodes(args.llm)
 
     records = parse_logs(output, model_name)
     if not records:

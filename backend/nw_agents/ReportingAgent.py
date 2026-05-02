@@ -1,5 +1,6 @@
 import logging
 import asyncio
+import os
 import time
 import uuid
 from collections import deque
@@ -7,11 +8,25 @@ from collections import deque
 logger = logging.getLogger(__name__)
 
 from pydantic_ai import Agent, RunContext
-from pydantic_ai.models.groq import GroqModel
 from common_classes import NetworkReport, MyDeps, AnalysisResult
 from dotenv import load_dotenv
 load_dotenv()
 from tools.pcap_analyzer import analyze_pcap_summary
+
+# ---------------------------------------------------------------------------
+# Model selection — controlled by LLM_PROVIDER env var (set by benchmark_log.py)
+#   LLM_PROVIDER=groq   → LLaMA 3.3 70B via Groq LPU  (default)
+#   LLM_PROVIDER=openai → GPT-4o via OpenAI
+# ---------------------------------------------------------------------------
+_provider = os.getenv("LLM_PROVIDER", "groq").lower()
+if _provider == "openai":
+    from pydantic_ai.models.openai import OpenAIModel
+    active_model = OpenAIModel("gpt-4o")
+else:
+    from pydantic_ai.models.groq import GroqModel
+    active_model = GroqModel("llama-3.3-70b-versatile")
+
+logger.info(f"[ReportingAgent] Using model provider: {_provider.upper()}")
 
 # ---------------------------------------------------------------------------
 # Proposal 1: Hybrid Detection Strategy
@@ -42,11 +57,9 @@ Generate a focused, action-oriented incident report. Be direct and concise.
 Prioritize immediate mitigation commands over lengthy investigation text.
 """
 
-groq_model = GroqModel('llama-3.3-70b-versatile')
-
 # Full analysis agent — used for medium-confidence detections
 reporting_agent = Agent(
-    model=groq_model,
+    model=active_model,
     system_prompt=FULL_SYS_PROMPT,
     model_settings={'temperature': 0.2},
     output_retries=3,
@@ -56,7 +69,7 @@ reporting_agent = Agent(
 
 # Brief analysis agent — used for high-confidence detections (no PCAP tool = faster)
 brief_reporting_agent = Agent(
-    model=groq_model,
+    model=active_model,
     system_prompt=BRIEF_SYS_PROMPT,
     model_settings={'temperature': 0.1},
     output_retries=2,
