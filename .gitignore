@@ -21,8 +21,8 @@ paper/M3_Final_Report.md
 paper/main (1).tex
 paper/benchmark_all.csv
 paper/benchmark_groq.csv
-NetMoniAI/
 paper/benchmark_gpt4o.csv
+
 # Node.js / React
 frontend/node_modules/
 frontend/build/
