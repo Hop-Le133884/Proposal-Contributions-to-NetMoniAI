@@ -64,12 +64,12 @@ Each generated report records `analysis_strategy` and `time_to_report_ms` for ev
 
 **Implementation**: Replaced GPT-4o with LLaMA 3.3 70B served via Groq's LPU (Language Processing Unit) — custom silicon designed specifically for LLM inference. Groq LPU achieves substantially faster token generation than GPU-based serving.
 
-**Benchmark results** (same 8-node brute force scenario, `high_confidence_brief` path):
+**Benchmark results** (8-node Web Attack – Brute Force scenario, `high_confidence_brief` path, run 2026-05-02):
 
 | Model | Hardware | Avg Time-to-Report | Avg Tokens | Speedup |
 |---|---|---|---|---|
-| GPT-4o | OpenAI GPU cloud | 2924 ms | 610 | baseline |
-| LLaMA 3.3 70B | Groq LPU cloud | **709 ms** | 815 | **4.1×** |
+| GPT-4o | OpenAI GPU cloud | 2,677 ms | 608 | baseline |
+| LLaMA 3.3 70B | Groq LPU cloud | **773 ms** | 810 | **3.5×** |
 
 Both models correctly identified all 8 nodes as under brute force attack — same accuracy, significantly different speed.
 
@@ -103,6 +103,7 @@ Raw benchmark data: `paper/benchmark_gpt4o.csv`, `paper/benchmark_groq.csv`, `pa
 ### 1. Install Python dependencies
 
 ```bash
+uv venv --python 3.12
 uv sync
 ```
 

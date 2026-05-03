@@ -1,8 +1,8 @@
 import logging
 import asyncio
-import os
 import time
 import uuid
+import os
 from collections import deque
 
 logger = logging.getLogger(__name__)
@@ -13,20 +13,18 @@ from dotenv import load_dotenv
 load_dotenv()
 from tools.pcap_analyzer import analyze_pcap_summary
 
-# ---------------------------------------------------------------------------
-# Model selection — controlled by LLM_PROVIDER env var (set by benchmark_log.py)
-#   LLM_PROVIDER=groq   → LLaMA 3.3 70B via Groq LPU  (default)
-#   LLM_PROVIDER=openai → GPT-4o via OpenAI
-# ---------------------------------------------------------------------------
-_provider = os.getenv("LLM_PROVIDER", "groq").lower()
+# Select model via LLM_PROVIDER env var (set by benchmark_log.py or manually)
+_provider = os.environ.get("LLM_PROVIDER", "groq")
 if _provider == "openai":
     from pydantic_ai.models.openai import OpenAIModel
-    active_model = OpenAIModel("gpt-4o")
+    _model = OpenAIModel('gpt-4o')
+    _model_label = "GPT-4o"
 else:
     from pydantic_ai.models.groq import GroqModel
-    active_model = GroqModel("llama-3.3-70b-versatile")
+    _model = GroqModel('llama-3.3-70b-versatile')
+    _model_label = "LLaMA-3.3-70B"
 
-logger.info(f"[ReportingAgent] Using model provider: {_provider.upper()}")
+logger.info(f"[ReportingAgent] Using model: {_model_label} (LLM_PROVIDER={_provider})")
 
 # ---------------------------------------------------------------------------
 # Proposal 1: Hybrid Detection Strategy
@@ -59,7 +57,7 @@ Prioritize immediate mitigation commands over lengthy investigation text.
 
 # Full analysis agent — used for medium-confidence detections
 reporting_agent = Agent(
-    model=active_model,
+    model=_model,
     system_prompt=FULL_SYS_PROMPT,
     model_settings={'temperature': 0.2},
     output_retries=3,
@@ -69,7 +67,7 @@ reporting_agent = Agent(
 
 # Brief analysis agent — used for high-confidence detections (no PCAP tool = faster)
 brief_reporting_agent = Agent(
-    model=active_model,
+    model=_model,
     system_prompt=BRIEF_SYS_PROMPT,
     model_settings={'temperature': 0.1},
     output_retries=2,
@@ -236,7 +234,7 @@ async def generate_network_report(analysis_result, pcap_path: str,
 
         elapsed_ms = (time.perf_counter() - t_start) * 1000
         logger.info(
-            f"[Hybrid|{strategy.upper()}|LLaMA-3.3-70B] report in {elapsed_ms:.0f}ms | {tokens} tokens"
+            f"[Hybrid|{strategy.upper()}|{_model_label}] report in {elapsed_ms:.0f}ms | {tokens} tokens"
         )
         report.analysis_strategy = strategy
         report.time_to_report_ms = round(elapsed_ms, 1)

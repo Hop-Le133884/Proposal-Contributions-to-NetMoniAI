@@ -21,6 +21,7 @@ class PerformanceMonitoringAgent:
         self.performance_to_security_queue = performance_to_security_queue
         self.security_to_performance_queue = security_to_performance_queue
         self.sliding_window = deque(maxlen=SLIDING_WINDOW_MAXLEN)
+        self.latest_metrics = None
         self.deps = MyDeps(pathToFile="lastCapture/capture.pcap", duration=18, cycle_interval=1)
         self.previous_attack_detected = False
         self.last_check_time = time.time()
@@ -155,6 +156,7 @@ class PerformanceMonitoringAgent:
                     self.history.append(history_entry)
                     await self.save_history()
                     
+                    self.latest_metrics = self.sliding_window[-1]
                     self.sliding_window.clear()
             await asyncio.sleep(1)
 

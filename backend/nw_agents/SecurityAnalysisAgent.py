@@ -2,10 +2,10 @@ import asyncio
 import logging
 import torch
 from transformers import pipeline
+from collections import Counter
 import os
 from dotenv import load_dotenv
-from tools.pcap_analyzer import analyze_pcap_summary
-from scapy.all import rdpcap
+from scapy.all import rdpcap, IP, TCP, UDP
 
 
 load_dotenv()
@@ -39,27 +39,59 @@ class SecurityAnalysisAgent:
             device=self.device
         )
 
+    def _extract_features(self, packet) -> str | None:
+        """Convert a packet to the numeric feature string this BERT model expects.
+
+        Format matches the training input of rdpahalavan/bert-network-packet-flow-header-payload:
+        '0 0 195 -1 <src_port> <dst_port> <ip_len> <payload_len> <ttl> <tos> <tcp_dataofs> -1 <payload_bytes...>'
+        UDP packets substitute tcp_dataofs=0.
+        """
+        if IP not in packet:
+            return None
+        try:
+            ip_length = len(packet[IP])
+            ip_ttl   = packet[IP].ttl
+            ip_tos   = packet[IP].tos
+            if TCP in packet:
+                src_port       = packet[TCP].sport
+                dst_port       = packet[TCP].dport
+                tcp_data_offset = packet[TCP].dataofs
+                payload_bytes  = bytes(packet[TCP].payload)
+            elif UDP in packet:
+                src_port       = packet[UDP].sport
+                dst_port       = packet[UDP].dport
+                tcp_data_offset = 0
+                payload_bytes  = bytes(packet[UDP].payload)
+            else:
+                return None
+            payload_length  = len(payload_bytes)
+            payload_decimal = ' '.join(str(b) for b in payload_bytes[:256])
+            return f"0 0 195 -1 {src_port} {dst_port} {ip_length} {payload_length} {ip_ttl} {ip_tos} {tcp_data_offset} -1 {payload_decimal}"
+        except Exception:
+            return None
+
     async def analyze_traffic(self, pcap_path: str):
         try:
-            # 1. Read the raw packets (we only need the first 5-10 to see the pattern)
-            packets = await asyncio.to_thread(rdpcap, pcap_path, count=10)
-            
-            # 2. Extract the raw hex/payload BERT actually understands
-            # This joins the hex representation of the first few packets
-            hex_data = []
-            for pkt in packets:
-                if pkt.haslayer('TCP'):
-                    # BERT models for networking usually look at the hex-string 
-                    hex_data.append(bytes(pkt).hex()[:100]) # Take first 100 chars of each packet
-            
-            packet_summary = " ".join(hex_data)
+            # Read up to 50 packets; more gives BERT a better sample to vote on
+            packets = await asyncio.to_thread(rdpcap, pcap_path, count=50)
 
-            # 3. Run BERT on the raw hex data
-            result = await asyncio.to_thread(self.classifier, packet_summary)
-            result = result[0]
-            
-            label = result['label']
-            score = result['score']
+            feature_strings = []
+            for pkt in packets:
+                fs = self._extract_features(pkt)
+                if fs:
+                    feature_strings.append(fs[:1024])
+
+            if not feature_strings:
+                label = "Normal"
+                score = 1.0
+            else:
+                results = await asyncio.to_thread(self.classifier, feature_strings)
+                labels = [r['label'] for r in results]
+                scores = [r['score'] for r in results]
+                # Majority-vote label; average confidence across packets that voted for it
+                label = Counter(labels).most_common(1)[0][0]
+                label_scores = [s for l, s in zip(labels, scores) if l == label]
+                score = sum(label_scores) / len(label_scores)
 
             # Proposal 1: Classify BERT confidence into three tiers
             #   high   (≥90%): BERT very certain → brief cloud prompt, fast response
@@ -79,7 +111,7 @@ class SecurityAnalysisAgent:
                 "confidence": score,
                 "engine": "Local-BERT-GPU",
                 "confidence_tier": confidence_tier,
-                "raw_summary": packet_summary,
+                "packets_classified": len(feature_strings),
                 "raw_bert_output": {label: score}
             }
 

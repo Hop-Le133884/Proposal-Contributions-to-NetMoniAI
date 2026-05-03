@@ -50,8 +50,10 @@ async def websocket_endpoint(websocket: WebSocket):
                 user_message = data.get('message')
                 performance_agent = websocket.app.state.performance_agent
 
-                if performance_agent.sliding_window:
-                    latest_metrics = performance_agent.sliding_window[-1]
+                latest_metrics = performance_agent.latest_metrics or (
+                    performance_agent.sliding_window[-1] if performance_agent.sliding_window else None
+                )
+                if latest_metrics:
                     metrics_str = (
                         f"- Bytes sent: {latest_metrics['bytes_sent']}\n"
                         f"- Bytes received: {latest_metrics['bytes_recv']}\n"
